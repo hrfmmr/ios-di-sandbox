@@ -1,0 +1,49 @@
+name: app
+
+options:
+  bundleIdPrefix: example.com
+  deploymentTarget:
+    iOS: 15.0
+
+targetTemplates:
+  EmbeddedFramework:
+    platform: iOS
+    type: framework
+    sources:
+      - path: ${target_name}
+  EmbeddedFrameworkTests:
+    type: bundle.unit-test
+    platform: iOS
+    dependencies:
+      - target: app
+    sources:
+      - path: ${target_name}
+      - path: ${target_name}
+        excludes:
+          - Info.plist
+        buildPhase: resources
+  SandboxApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: ${target_name}
+      - path: ${target_name}
+        excludes:
+          - Info.plist
+        buildPhase: resources
+
+targets:
+  app:
+    type: application
+    platform: iOS
+    sources:
+      - app
+    dependencies:
+      - target: featureAlpha
+
+  featureAlpha:
+    templates:
+      - EmbeddedFramework
+  featureAlphaSandboxApp:
+    templates:
+      - SandboxApp

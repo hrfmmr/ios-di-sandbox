@@ -22,12 +22,19 @@ targetTemplates:
         excludes:
           - Info.plist
         buildPhase: resources
+  FeatureFramework:
+    platform: iOS
+    type: framework
+    sources:
+      - path: Features/${target_name}
+    dependencies:
+      - target: Core
   SandboxApp:
     type: application
     platform: iOS
     sources:
-      - path: ${target_name}
-      - path: ${target_name}
+      - path: Features/${target_name}
+      - path: Features/${target_name}
         excludes:
           - Info.plist
         buildPhase: resources
@@ -39,11 +46,42 @@ targets:
     sources:
       - app
     dependencies:
-      - target: featureAlpha
+      - target: Alpha
 
-  featureAlpha:
+  Core:
     templates:
       - EmbeddedFramework
-  featureAlphaSandboxApp:
+    transitivelyLinkDependencies: true
+    dependencies:
+      - target: Umbrella
+  Umbrella:
+    platform: iOS
+    type: framework.static
+    dependencies:
+      - package: NeedleFoundation
+        product: NeedleFoundation
+
+  # Features
+  Alpha:
+    templates:
+      - FeatureFramework
+  AlphaSandboxApp:
     templates:
       - SandboxApp
+    dependencies:
+      - target: Alpha
+      - package: NeedleFoundation
+        product: NeedleFoundation
+    preBuildScripts:
+      - name: Generate resolving dependencies code
+        script: |
+          cd "$PROJECT_DIR" && \
+          /opt/homebrew/bin/needle generate \
+          Features/AlphaSandboxApp/NeedleGenerated.swift \
+          . \
+          --header-doc .needle/copyright_header.txt
+
+packages:
+  NeedleFoundation:
+    url: https://github.com/uber/needle
+    from: 0.17.2

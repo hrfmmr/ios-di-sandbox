@@ -4,6 +4,7 @@ options:
   bundleIdPrefix: example.com
   deploymentTarget:
     iOS: 15.0
+  carthageExecutablePath: mint run Carthage/Carthage
 
 targetTemplates:
   EmbeddedFramework:
@@ -38,6 +39,8 @@ targetTemplates:
         excludes:
           - Info.plist
         buildPhase: resources
+    dependencies:
+      - target: Core
 
 targets:
   app:
@@ -70,8 +73,6 @@ targets:
       - SandboxApp
     dependencies:
       - target: Alpha
-      - package: NeedleFoundation
-        product: NeedleFoundation
     preBuildScripts:
       - name: Generate resolving dependencies code
         script: |
@@ -79,6 +80,7 @@ targets:
           /opt/homebrew/bin/needle generate \
           Features/AlphaSandboxApp/NeedleGenerated.swift \
           . \
+          --exclude-paths "Carthage" \
           --header-doc .needle/copyright_header.txt
 
 packages:

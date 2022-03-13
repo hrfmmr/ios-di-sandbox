@@ -1,0 +1,19 @@
+targets:
+  Bravo:
+    templates:
+      - FeatureFramework
+  BravoSandboxApp:
+    templates:
+      - SandboxApp
+    sources:
+      - path: ${target_name}
+    dependencies:
+      - target: Bravo
+    preBuildScripts:
+      - name: Generate resolving dependencies code
+        script: |
+          cd "$PROJECT_DIR" && \
+          /opt/homebrew/bin/needle generate \
+          Features/Bravo/BravoSandboxApp/NeedleGenerated.swift \
+          Features/Bravo \
+          --header-doc .needle/copyright_header.txt

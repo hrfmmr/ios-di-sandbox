@@ -80,7 +80,6 @@ targets:
           /opt/homebrew/bin/needle generate \
           Features/AlphaSandboxApp/NeedleGenerated.swift \
           . \
-          --exclude-paths "Carthage" \
           --header-doc .needle/copyright_header.txt
 
 packages:

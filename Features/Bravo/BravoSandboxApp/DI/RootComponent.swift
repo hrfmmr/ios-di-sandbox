@@ -10,19 +10,6 @@ class RootComponent: BootstrapComponent {
     }
 
     var fooRepository: FooRepository {
-        FooRepositoryImpl()
+        shared { FooRepositoryImpl() }
     }
-
-    override init() {
-        let instance = __DependencyProviderRegistry.instance
-        super.init()
-    }
-}
-
-// MARK: Feature Bravo dependency
-extension RootComponent {
-}
-
-// MARK: Feature other dependencies
-extension RootComponent {
 }

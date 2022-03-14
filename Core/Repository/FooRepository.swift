@@ -1,20 +1,16 @@
+import Combine
 import Foundation
 
 public protocol FooRepository {
-    func fetch() -> Int
+    var currentValue: AnyPublisher<Int, Never> { get }
     func update(value: Int)
 }
 
 public final class FooRepositoryImpl: FooRepository {
-    private var value: Int
-
-    public init() {
-        self.value = 0
-    }
-
-    public func fetch() -> Int {
-        value
-    }
+    public var currentValue: AnyPublisher<Int, Never> { $value.eraseToAnyPublisher() }
+    @Published private var value = 0
+    
+    public init() {}
 
     public func update(value: Int) {
         self.value = value

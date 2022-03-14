@@ -15,6 +15,7 @@
 //
 
 import Alpha
+import Combine
 import Core
 import Foundation
 import NeedleFoundation
@@ -40,6 +41,9 @@ public func registerProviderFactories() {
 private class FeatureAlphaDependencyc654d9c0e52ec46d8635BaseProvider: FeatureAlphaDependency {
     var fooRepository: FooRepository {
         return rootComponent.fooRepository
+    }
+    var bravoFooBuilder: BravoFooBuildable {
+        return rootComponent.bravoFooBuilder
     }
     private let rootComponent: RootComponent
     init(rootComponent: RootComponent) {

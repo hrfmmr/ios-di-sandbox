@@ -10,45 +10,21 @@ class RootComponent: BootstrapComponent {
     }
 
     var fooRepository: FooRepository {
-        FooRepositoryImpl()
+        shared { FooRepositoryImpl() }
     }
-
-    override init() {
-        let instance = __DependencyProviderRegistry.instance
-        super.init()
+    
+    var bravoFooBuilder: BravoFooBuildable {
+        MockBravoFooBuilder()
     }
 }
 
-// MARK: Feature Alpha dependency
-extension RootComponent {
+private extension RootComponent {
+    class MockBravoFooBuilder: BravoFooBuildable {
+        func build() -> UIViewController {
+            let vc: UIViewController = .init()
+            vc.view.backgroundColor = .white
+            vc.title = "MockBravoFooVC"
+            return vc
+        }
+    }
 }
-
-// MARK: Feature other dependencies
-extension RootComponent {
-}
-
-// MARK: - Debug
-
-//public protocol FeatureAlphaDependency: Dependency {
-//    var fooRepository: FooRepository { get }
-//}
-//
-//class AlphaFooBuilder: Builder<FeatureAlphaDependency>, AlphaFooBuildable {
-//    func build() -> UIViewController {
-//        .init(nibName: nil, bundle: nil)
-//    }
-//}
-//
-//public class FeatureAlphaComponent:
-//    Component<FeatureAlphaDependency>,
-//    FeatureAlpha
-//{
-//    public func fooBuilder() -> AlphaFooBuildable {
-//        AlphaFooBuilder(dependency: dependency)
-//    }
-//
-//    override public init(parent: Scope) {
-//        let instance = __DependencyProviderRegistry.instance
-//        super.init(parent: parent)
-//    }
-//}

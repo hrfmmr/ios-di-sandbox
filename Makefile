@@ -16,7 +16,7 @@ build-xcodeproj:
 
 .PHONY: needle
 needle:
-	/opt/homebrew/bin/needle generate \
-	Features/Alpha/AlphaSandboxApp/NeedleGenerated.swift \
-	Features/Alpha \
-	--header-doc .needle/copyright_header.txt
+	@needle generate \
+		app/DI/NeedleGenerated.swift \
+		.needle/source_list_files.txt \
+		--header-doc .needle/copyright_header.txt

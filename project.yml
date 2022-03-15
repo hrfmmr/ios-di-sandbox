@@ -44,6 +44,14 @@ targets:
       - app
     dependencies:
       - target: Alpha
+    preBuildScripts:
+      - name: Generate resolving dependencies code
+        script: |
+          cd "$PROJECT_DIR" && \
+          needle generate \
+          app/DI/NeedleGenerated.swift \
+          .needle/source_list_files.txt \
+          --header-doc .needle/copyright_header.txt
 
   Core:
     templates:

@@ -13,7 +13,7 @@ targets:
       - name: Generate resolving dependencies code
         script: |
           cd "$PROJECT_DIR" && \
-          /opt/homebrew/bin/needle generate \
+          needle generate \
           Features/Bravo/BravoSandboxApp/NeedleGenerated.swift \
           Features/Bravo \
           --header-doc .needle/copyright_header.txt

@@ -4,7 +4,6 @@ options:
   bundleIdPrefix: example.com
   deploymentTarget:
     iOS: 15.0
-  carthageExecutablePath: mint run Carthage/Carthage
 
 targetTemplates:
   EmbeddedFramework:

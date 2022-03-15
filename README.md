@@ -1,5 +1,4 @@
-# ios-di-sandbox
-Dependency resolve for feature-modularized app example
+Dependency resolving example for feature-modularized iOS app
 
 ## Prerequisites
 

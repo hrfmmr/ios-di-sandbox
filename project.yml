@@ -42,7 +42,9 @@ targets:
     sources:
       - app
     dependencies:
+      - target: Core
       - target: Alpha
+      - target: Bravo
     preBuildScripts:
       - name: Generate resolving dependencies code
         script: |

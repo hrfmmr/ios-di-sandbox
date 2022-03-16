@@ -2,9 +2,10 @@ Dependency resolving example for feature-modularized iOS app
 
 ## Prerequisites
 
-```sh
-brew install needle
-```
+* [Mint](https://github.com/yonaskolb/Mint)
+    ```sh
+    brew install mint
+    ```
 
 ## Set up
 

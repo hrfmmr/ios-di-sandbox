@@ -13,7 +13,7 @@ targets:
       - name: Generate resolving dependencies code
         script: |
           cd "$PROJECT_DIR" && \
-          needle generate \
+          lib/needle/Generator/bin/needle generate \
           Features/Alpha/AlphaSandboxApp/NeedleGenerated.swift \
           Features/Alpha \
           --header-doc .needle/copyright_header.txt

@@ -1,4 +1,5 @@
-XCODE_PROJ := app.xcodeproj
+APP_NAME := app
+DESTINATION := "platform=iOS Simulator,name=iPhone 13"
 
 mint-run := mint run
 needle := lib/needle/Generator/bin/needle
@@ -26,3 +27,12 @@ needle:
 		app/DI/NeedleGenerated.swift \
 		.needle/source_list_files.txt \
 		--header-doc .needle/copyright_header.txt
+
+.PHONY: build
+build: build-xcodeproj
+	xcodebuild \
+		-scheme ${APP_NAME} \
+		-sdk iphonesimulator \
+		-destination ${DESTINATION} \
+		clean \
+		build

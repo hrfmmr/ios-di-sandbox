@@ -1,6 +1,5 @@
 import UIKit
 import NeedleFoundation
-import AlphaSandboxApp
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

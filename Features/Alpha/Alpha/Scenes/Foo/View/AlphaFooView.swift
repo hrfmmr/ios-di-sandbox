@@ -3,27 +3,19 @@ import SwiftUI
 import Core
 
 protocol AlphaFooInput {
-    func update(_ state: AlphaFooViewState)
+    var state: AlphaFooState { get set }
 }
 
 protocol AlphaFooOutput {
     var didTapBravoFoo: AnyPublisher<Void, Never> { get }
 }
 
-class AlphaFooViewState: ObservableObject {
-    @Published var fooValue: Int?
-    
-    init(fooValue: Int? = nil) {
-        self.fooValue = fooValue
-    }
-}
-
-struct AlphaFooView: View {
+struct AlphaFooView: View, AlphaFooInput {
     private let didTapBravoFooSubject = PassthroughSubject<Void, Never>()
 
-    @ObservedObject private var state: AlphaFooViewState = .init()
+    @ObservedObject var state: AlphaFooState
 
-    init(state: AlphaFooViewState = .init()) {
+    init(state: AlphaFooState) {
         self.state = state
     }
 
@@ -37,12 +29,6 @@ struct AlphaFooView: View {
             }
             .frame(width: 200, height: 44)
         }
-    }
-}
-
-extension AlphaFooView: AlphaFooInput {
-    func update(_ state: AlphaFooViewState) {
-        self.state.fooValue = state.fooValue
     }
 }
 

@@ -10,13 +10,19 @@ public protocol FeatureBravoDependency: Dependency {
 
 class BravoFooBuilder: Builder<FeatureBravoDependency>, BravoFooBuildable {
     func build() -> UIViewController {
-        BravoFooVC(
+        let state: BravoFooState = .init()
+        return BravoFooVC(
             dependency: .init(
-                viewContainer: AnyViewContainer(BravoFooView()),
+                viewContainer: AnyViewContainer(makeViewContainer(state: state)),
+                state: state,
                 fetchUseCase: fetchUseCase,
                 updateUseCase: updateUseCase
             )
         )
+    }
+
+    private func makeViewContainer(state: BravoFooState) -> BravoFooView {
+        BravoFooView(state: state)
     }
 
     private var fetchUseCase: UseCase<Void, AnyPublisher<Int, Never>, Never> {

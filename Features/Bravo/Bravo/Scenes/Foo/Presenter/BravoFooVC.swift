@@ -5,6 +5,7 @@ import UIKit
 public final class BravoFooVC: UIViewController {
     public struct Dependency {
         let viewContainer: AnyViewContainer<BravoFooInput, BravoFooOutput>
+        let state: BravoFooState
         let fetchUseCase: UseCase<Void, AnyPublisher<Int, Never>, Never>
         let updateUseCase: UseCase<Int, Void, Error>
     }
@@ -12,7 +13,6 @@ public final class BravoFooVC: UIViewController {
     private let dependency: Dependency
 
     // Events
-    @Published private var state: BravoFooViewState = .init()
     private var cancellables = Set<AnyCancellable>()
     
     public init(dependency: Dependency) {
@@ -40,10 +40,10 @@ public final class BravoFooVC: UIViewController {
             guard let self = self else { return }
             switch result {
             case let .success(publisher):
-                publisher.sink { value in
-                    self.state = .init(fooValue: value)
-                }
-                .store(in: &self.cancellables)
+                publisher
+                    .map { Optional($0) }
+                    .assign(to: \.fooValue, on: self.dependency.state)
+                    .store(in: &self.cancellables)
             }
         }
     }
@@ -51,23 +51,13 @@ public final class BravoFooVC: UIViewController {
 
 private extension BravoFooVC {
     func binding() {
-        bindInput()
         bindOutput()
     }
     
-    func bindInput() {
-        let input = dependency.viewContainer.input
-        $state.eraseToAnyPublisher()
-            .sink { state in
-                input.update(state)
-            }
-            .store(in: &cancellables)
-    }
-
     func bindOutput() {
         let output = dependency.viewContainer.output
         output.didTapIncrementFoo.sink { [weak self] _ in
-            guard let self = self, let currentValue = self.state.fooValue else { return }
+            guard let self = self, let currentValue = self.dependency.state.fooValue else { return }
             let value = currentValue + 1
             self.dependency.updateUseCase.execute(value, completion: nil)
         }

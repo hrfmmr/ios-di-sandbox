@@ -3,27 +3,19 @@ import SwiftUI
 import Core
 
 protocol BravoFooInput {
-    func update(_ state: BravoFooViewState)
+    var state: BravoFooState { get set }
 }
 
 protocol BravoFooOutput {
     var didTapIncrementFoo: AnyPublisher<Void, Never> { get }
 }
 
-class BravoFooViewState: ObservableObject {
-    @Published var fooValue: Int?
-    
-    init(fooValue: Int? = nil) {
-        self.fooValue = fooValue
-    }
-}
-
-struct BravoFooView: View {
+struct BravoFooView: View, BravoFooInput {
     private let didTapIncrementFooSubject = PassthroughSubject<Void, Never>()
     
-    @ObservedObject private var state: BravoFooViewState
+    @ObservedObject var state: BravoFooState
 
-    init(state: BravoFooViewState = .init()) {
+    init(state: BravoFooState) {
         self.state = state
     }
 
@@ -38,12 +30,6 @@ struct BravoFooView: View {
                 Text("increment")
             }
         }
-    }
-}
-
-extension BravoFooView: BravoFooInput {
-    func update(_ state: BravoFooViewState) {
-        self.state.fooValue = state.fooValue
     }
 }
 

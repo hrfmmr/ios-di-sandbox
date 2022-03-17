@@ -10,8 +10,17 @@ default: bootstrap
 .PHONY: bootstrap
 bootstrap:
 	mint bootstrap
+	@"$(MAKE)" git-hooks
 	@"$(MAKE)" submodules
 	@"$(MAKE)" build-xcodeproj
+
+hooks = $(patsubst .git-hooks/%,.git/hooks/%,$(wildcard .git-hooks/*))
+.PHONY: hooks
+$(hooks):
+	@test -d .git/hooks && ln -fnsv $(patsubst .git/hooks/%,$(PWD)/.git-hooks/%,$@) $@ \
+		|| echo "skipping git hook installation: .git/hooks does not exist" >&2 1>/dev/null
+.PHONY: git-hooks
+git-hooks: $(hooks)
 
 .PHONY: build-xcodeproj
 build-xcodeproj:
@@ -39,5 +48,11 @@ build: build-xcodeproj
 
 .PHONY: format
 format:
-	$(mint-run) swiftformat . \
+	@$(mint-run) swiftformat . \
+		--exclude lib
+
+.PHONY: lint
+lint:
+	@$(mint-run) swiftformat . \
+		--lint \
 		--exclude lib

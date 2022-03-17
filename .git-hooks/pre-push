@@ -1,0 +1,22 @@
+#!/bin/bash
+
+check() {
+    cmd="$1"
+
+    if eval "$cmd"; then
+        echo "👍"
+    else
+        echo -e "❗"
+        exit 1
+    fi
+}
+
+check_lint() {
+    echo -n "🔍 Linting..."
+    check "make lint"
+}
+
+set -euo pipefail
+
+check_lint
+echo "Done✨"

@@ -1,8 +1,8 @@
-import Foundation
 import Combine
-import UIKit
-import NeedleFoundation
 import Core
+import Foundation
+import NeedleFoundation
+import UIKit
 
 public protocol FeatureBravoDependency: Dependency {
     var fooRepository: FooRepository { get }

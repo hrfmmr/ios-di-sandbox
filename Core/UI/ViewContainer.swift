@@ -1,6 +1,6 @@
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 public protocol ViewContainer {
     associatedtype Input
@@ -22,10 +22,10 @@ public class AnyViewContainer<Input, Output>: ViewContainer {
     public let input: Input
     public let output: Output
     public let view: UIView
-    
+
     public init<T: ViewContainer>(_ container: T) where T.Input == Input, T.Output == Output {
-        self.input = container.input
-        self.output = container.output
-        self.view = container.view
+        input = container.input
+        output = container.output
+        view = container.view
     }
 }

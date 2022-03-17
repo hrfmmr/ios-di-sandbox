@@ -1,6 +1,6 @@
 import Combine
-import SwiftUI
 import Core
+import SwiftUI
 
 protocol AlphaFooInput {
     var state: AlphaFooState { get set }

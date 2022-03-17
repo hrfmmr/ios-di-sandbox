@@ -1,6 +1,6 @@
-import Foundation
 import Combine
 import Core
+import Foundation
 
 class UpdateFooValueUseCase: UseCaseType {
     typealias Parameters = Int

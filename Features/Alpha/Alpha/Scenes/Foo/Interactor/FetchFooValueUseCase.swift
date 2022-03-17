@@ -1,6 +1,6 @@
-import Foundation
 import Combine
 import Core
+import Foundation
 
 class FetchFooValueUseCase: UseCaseType {
     struct Dependency {

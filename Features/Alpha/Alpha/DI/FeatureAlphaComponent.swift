@@ -1,8 +1,8 @@
-import Foundation
 import Combine
-import UIKit
 import Core
+import Foundation
 import NeedleFoundation
+import UIKit
 
 public protocol FeatureAlphaDependency: Dependency {
     var fooRepository: FooRepository { get }
@@ -21,11 +21,11 @@ class AlphaFooBuilder: Builder<FeatureAlphaDependency>, AlphaFooBuildable {
             )
         )
     }
-    
+
     func makeViewContainer(state: AlphaFooState) -> AlphaFooView {
         AlphaFooView(state: state)
     }
-    
+
     private var fetchUseCase: UseCase<Void, AnyPublisher<Int, Never>, Never> {
         UseCase(FetchFooValueUseCase(
             dependency: .init(
@@ -33,7 +33,7 @@ class AlphaFooBuilder: Builder<FeatureAlphaDependency>, AlphaFooBuildable {
             )
         ))
     }
-    
+
     private var router: AlphaFooWireframe {
         AlphaFooRouter(dependency: .init(
             bravoFooBuilder: dependency.bravoFooBuilder

@@ -1,5 +1,5 @@
-import UIKit
 import Core
+import UIKit
 
 protocol AlphaFooWireframe {
     func showBravoFoo(on viewController: UIViewController)
@@ -9,9 +9,9 @@ class AlphaFooRouter: AlphaFooWireframe {
     struct Dependency {
         let bravoFooBuilder: BravoFooBuildable
     }
-    
+
     private let dependency: Dependency
-    
+
     init(dependency: Dependency) {
         self.dependency = dependency
     }

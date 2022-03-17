@@ -9,7 +9,7 @@ public protocol FooRepository {
 public final class FooRepositoryImpl: FooRepository {
     public var currentValue: AnyPublisher<Int, Never> { $value.eraseToAnyPublisher() }
     @Published private var value = 0
-    
+
     public init() {}
 
     public func update(value: Int) {

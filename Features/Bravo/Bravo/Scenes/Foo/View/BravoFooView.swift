@@ -1,6 +1,6 @@
 import Combine
-import SwiftUI
 import Core
+import SwiftUI
 
 protocol BravoFooInput {
     var state: BravoFooState { get set }
@@ -12,7 +12,7 @@ protocol BravoFooOutput {
 
 struct BravoFooView: View, BravoFooInput {
     private let didTapIncrementFooSubject = PassthroughSubject<Void, Never>()
-    
+
     @ObservedObject var state: BravoFooState
 
     init(state: BravoFooState) {

@@ -1,7 +1,7 @@
-import Foundation
-import NeedleFoundation
 import Bravo
 import Core
+import Foundation
+import NeedleFoundation
 import UIKit
 
 class RootComponent: BootstrapComponent {

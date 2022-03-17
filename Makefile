@@ -36,3 +36,8 @@ build: build-xcodeproj
 		-destination ${DESTINATION} \
 		clean \
 		build
+
+.PHONY: format
+format:
+	$(mint-run) swiftformat . \
+		--exclude lib

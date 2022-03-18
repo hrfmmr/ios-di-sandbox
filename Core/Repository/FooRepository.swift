@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 
+/// @mockable
 public protocol FooRepository {
     var currentValue: AnyPublisher<Int, Never> { get }
     func update(value: Int)

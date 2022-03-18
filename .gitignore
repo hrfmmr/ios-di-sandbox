@@ -1,2 +1,3 @@
 *.xcodeproj/
 **/NeedleGenerated.swift
+**/GeneratedMocks.swift

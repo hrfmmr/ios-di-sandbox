@@ -11,6 +11,11 @@ check() {
     fi
 }
 
+check_build() {
+    echo -n "🔍 Building..."
+    check "make build"
+}
+
 check_test() {
     echo -n "🔍 Testing..."
     check "make test"
@@ -18,4 +23,5 @@ check_test() {
 
 set -euo pipefail
 
+check_build
 check_test

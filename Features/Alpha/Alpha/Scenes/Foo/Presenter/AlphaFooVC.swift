@@ -2,6 +2,16 @@ import Combine
 import Core
 import UIKit
 
+/// @mockable
+protocol AlphaFooInput {
+    var state: AlphaFooState { get set }
+}
+
+/// @mockable
+protocol AlphaFooOutput {
+    var didTapBravoFoo: AnyPublisher<Void, Never> { get }
+}
+
 final class AlphaFooVC: UIViewController {
     // MARK: Props
 

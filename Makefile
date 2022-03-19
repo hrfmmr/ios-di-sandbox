@@ -1,6 +1,7 @@
 APP_NAME := app
 DESTINATION := "platform=iOS Simulator,name=iPhone 13"
 APP_FEATURES := Alpha Bravo
+TEST_SCHEMES := Alpha
 
 mint-run := mint run
 needle := lib/needle/Generator/bin/needle
@@ -61,8 +62,15 @@ lint:
 .PHONY: mocks
 mocks:
 	@for target in $(APP_FEATURES); do \
-		$(mint-run) mockolo mockolo \
-			-s Core \
-			-s Features/$$target/$$target \
-			-d Features/$$target/"$$target"Tests/GeneratedMocks.swift; \
+		scripts/gen_mock.sh $$target; \
+	done
+
+.PHONY: test
+test: lint
+	for scheme in ${TEST_SCHEMES}; do \
+		xcodebuild \
+			-scheme $$scheme \
+			-sdk iphonesimulator \
+			-destination ${DESTINATION} \
+			test; \
 	done

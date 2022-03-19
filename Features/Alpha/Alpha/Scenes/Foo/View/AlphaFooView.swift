@@ -2,14 +2,6 @@ import Combine
 import Core
 import SwiftUI
 
-protocol AlphaFooInput {
-    var state: AlphaFooState { get set }
-}
-
-protocol AlphaFooOutput {
-    var didTapBravoFoo: AnyPublisher<Void, Never> { get }
-}
-
 struct AlphaFooView: View, AlphaFooInput {
     private let didTapBravoFooSubject = PassthroughSubject<Void, Never>()
 

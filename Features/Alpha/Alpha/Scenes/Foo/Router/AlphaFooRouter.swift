@@ -1,6 +1,7 @@
 import Core
 import UIKit
 
+/// @mockable
 protocol AlphaFooWireframe {
     func showBravoFoo(on viewController: UIViewController)
 }

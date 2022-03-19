@@ -2,6 +2,22 @@ targets:
   Alpha:
     templates:
       - FeatureFramework
+  AlphaTests:
+    platform: iOS
+    type: bundle.unit-test
+    sources:
+      - path: AlphaTests
+    dependencies:
+      - target: Core
+      - target: Alpha
+    preBuildScripts:
+      - name: Generate mock code
+        script: |
+          cd "$PROJECT_DIR"
+          if [ -f ".envrc" ]; then
+            source ".envrc"
+          fi
+          scripts/gen_mock.sh Alpha
   AlphaSandboxApp:
     templates:
       - SandboxApp
@@ -17,3 +33,8 @@ targets:
           Features/Alpha/AlphaSandboxApp/NeedleGenerated.swift \
           Features/Alpha \
           --header-doc .needle/copyright_header.txt
+
+schemes:
+  Alpha:
+    templates:
+      - FeatureScheme

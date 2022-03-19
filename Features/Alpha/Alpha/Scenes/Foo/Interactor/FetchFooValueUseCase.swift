@@ -2,6 +2,7 @@ import Combine
 import Core
 import Foundation
 
+/// @mockable
 class FetchFooValueUseCase: UseCaseType {
     struct Dependency {
         let gateway: FooRepository

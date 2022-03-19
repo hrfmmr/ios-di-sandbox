@@ -67,6 +67,27 @@ targets:
       - package: NeedleFoundation
         product: NeedleFoundation
 
+schemeTemplates:
+  FeatureScheme:
+    build:
+      targets:
+        ${scheme_name}: all
+        ${scheme_name}Tests: [test]
+    test:
+      targets:
+        - ${scheme_name}Tests
+      gatherCoverageData: true
+
+schemes:
+  app:
+    build:
+      targets:
+        app: all
+  Core:
+    build:
+      targets:
+        Core: all
+
 include:
   - Features/Alpha/project.yml
   - Features/Bravo/project.yml

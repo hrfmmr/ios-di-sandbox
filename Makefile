@@ -49,14 +49,18 @@ build: build-xcodeproj
 
 .PHONY: format
 format:
-	@$(mint-run) swiftformat . \
-		--exclude lib
+	@$(mint-run) swiftformat \
+		--exclude "**/NeedleGenerated.swift" \
+		--exclude "**/GeneratedMocks.swift" \
+		.
 
 .PHONY: lint
 lint:
-	@$(mint-run) swiftformat . \
+	@$(mint-run) swiftformat \
 		--lint \
-		--exclude lib
+		--exclude "**/NeedleGenerated.swift" \
+		--exclude "**/GeneratedMocks.swift" \
+		.
 
 .PHONY: mocks
 mocks:

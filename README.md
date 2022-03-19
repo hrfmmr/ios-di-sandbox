@@ -3,6 +3,7 @@ Dependency resolving example for feature-modularized iOS app
 ## Prerequisites
 
 * [Mint](https://github.com/yonaskolb/Mint)
+* [Needle](https://github.com/uber/needle#using-homebrew)
 
 ## Set up
 

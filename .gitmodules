@@ -1,3 +1,0 @@
-[submodule "lib/needle"]
-	path = lib/needle
-	url = https://github.com/uber/needle.git

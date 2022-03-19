@@ -4,7 +4,6 @@ APP_FEATURES := Alpha Bravo
 TEST_SCHEMES := Alpha
 
 mint-run := mint run
-needle := lib/needle/Generator/bin/needle
 
 .PHONY: default
 default: bootstrap
@@ -34,7 +33,7 @@ submodules:
 
 .PHONY: needle
 needle:
-	@$(needle) generate \
+	@needle generate \
 		app/DI/NeedleGenerated.swift \
 		.needle/source_list_files.txt \
 		--header-doc .needle/copyright_header.txt

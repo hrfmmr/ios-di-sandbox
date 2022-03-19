@@ -48,11 +48,14 @@ targets:
     preBuildScripts:
       - name: Generate resolving dependencies code
         script: |
-          cd "$PROJECT_DIR" && \
-          lib/needle/Generator/bin/needle generate \
-          app/DI/NeedleGenerated.swift \
-          .needle/source_list_files.txt \
-          --header-doc .needle/copyright_header.txt
+          cd "$PROJECT_DIR"
+          if [ -f ".envrc" ]; then
+            source ".envrc"
+          fi
+          needle generate \
+            app/DI/NeedleGenerated.swift \
+            .needle/source_list_files.txt \
+            --header-doc .needle/copyright_header.txt
 
   Core:
     templates:

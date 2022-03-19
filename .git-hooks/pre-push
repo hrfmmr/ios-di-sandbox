@@ -11,12 +11,11 @@ check() {
     fi
 }
 
-check_lint() {
-    echo -n "🔍 Linting..."
-    check "make lint"
+check_test() {
+    echo -n "🔍 Testing..."
+    check "make test"
 }
 
 set -euo pipefail
 
-check_lint
-echo "Done✨"
+check_test

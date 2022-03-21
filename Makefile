@@ -1,3 +1,4 @@
+SHELL=/bin/bash -o pipefail
 APP_NAME := app
 DESTINATION := "platform=iOS Simulator,name=iPhone 13"
 APP_FEATURES := Alpha Bravo

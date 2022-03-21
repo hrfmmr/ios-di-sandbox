@@ -13,6 +13,7 @@ bootstrap:
 	mint bootstrap
 	@"$(MAKE)" git-hooks
 	@"$(MAKE)" submodules
+	@"$(MAKE)" needle
 	@"$(MAKE)" build-xcodeproj
 
 hooks = $(patsubst .git-hooks/%,.git/hooks/%,$(wildcard .git-hooks/*))
@@ -33,10 +34,7 @@ submodules:
 
 .PHONY: needle
 needle:
-	@needle generate \
-		app/DI/NeedleGenerated.swift \
-		.needle/source_list_files.txt \
-		--header-doc .needle/copyright_header.txt
+	@scripts/gen_di.sh
 
 .PHONY: build
 build: build-xcodeproj

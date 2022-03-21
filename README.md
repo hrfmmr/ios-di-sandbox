@@ -1,5 +1,7 @@
 Dependency resolving example for feature-modularized iOS app
 
+[![Continuous Integration Status](https://github.com/hrfmmr/ios-di-sandbox/workflows/CI/badge.svg)](https://github.com/hrfmmr/ios-di-sandbox/workflows/CI/badge.svg)
+
 ## Prerequisites
 
 * [Mint](https://github.com/yonaskolb/Mint)

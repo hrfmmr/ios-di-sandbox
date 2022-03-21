@@ -45,7 +45,7 @@ build: build-xcodeproj
 		-sdk iphonesimulator \
 		-destination ${DESTINATION} \
 		clean \
-		build
+		build | $(mint-run) xcbeautify
 
 .PHONY: format
 format:
@@ -75,5 +75,5 @@ test: lint
 			-scheme $$scheme \
 			-sdk iphonesimulator \
 			-destination ${DESTINATION} \
-			test; \
+			test | $(mint-run) xcbeautify --report junit; \
 	done

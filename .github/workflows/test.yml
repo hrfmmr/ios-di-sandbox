@@ -1,0 +1,46 @@
+name: CI
+on: push
+jobs:
+  test:
+    runs-on: macos-11
+    env:
+      MINT_PATH: mint/lib
+      MINT_LINK_PATH: mint/bin
+    strategy:
+      matrix:
+        xcode: ['/Applications/Xcode_13.2.1.app/Contents/Developer']
+    steps:
+      - name: 👉 Checkout
+        uses: actions/checkout@v2
+
+      # Install prerequisites
+      - name: ⏬ Install Mint
+        run: brew install mint
+      - name: 💾 Cache Mint packages
+        uses: actions/cache@v2
+        with:
+          path: mint
+          key: ${{ runner.os }}-mint-${{ hashFiles('**/Mintfile') }}
+          restore-keys: |
+            ${{ runner.os }}-mint-
+
+      # Bootstrap
+      - name: 💨 make
+        run: make
+
+      # Build
+      - name: 🔨 Build
+        run: make build
+        env:
+          DEVELOPER_DIR: ${{ matrix.xcode }}
+
+      # Test
+      - name: 🔨 Test
+        run: make test
+        env:
+          DEVELOPER_DIR: ${{ matrix.xcode }}
+      - name: 📦 Store test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: build/reports

@@ -68,7 +68,7 @@ mocks:
 	done
 
 .PHONY: test
-test: lint
+test: lint mocks build-xcodeproj
 	for scheme in ${TEST_SCHEMES}; do \
 		xcodebuild \
 			-scheme $$scheme \

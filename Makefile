@@ -1,7 +1,7 @@
 APP_NAME := app
 DESTINATION := "platform=iOS Simulator,name=iPhone 13"
 APP_FEATURES := Alpha Bravo
-TEST_SCHEMES := Alpha
+TEST_SCHEMES := Alpha Bravo
 
 mint-run := mint run
 

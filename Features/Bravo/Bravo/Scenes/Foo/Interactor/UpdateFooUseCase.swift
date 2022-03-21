@@ -2,6 +2,7 @@ import Combine
 import Core
 import Foundation
 
+/// @mockable
 class UpdateFooValueUseCase: UseCaseType {
     typealias Parameters = Int
 

@@ -2,6 +2,16 @@ import Combine
 import Core
 import UIKit
 
+/// @mockable
+protocol BravoFooInput {
+    var state: BravoFooState { get set }
+}
+
+/// @mockable
+protocol BravoFooOutput {
+    var didTapIncrementFoo: AnyPublisher<Void, Never> { get }
+}
+
 public final class BravoFooVC: UIViewController {
     public struct Dependency {
         let viewContainer: AnyViewContainer<BravoFooInput, BravoFooOutput>

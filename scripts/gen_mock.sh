@@ -2,6 +2,7 @@
 TARGET=$1
 mint run mockolo mockolo \
   --mock-all \
+  --enable-args-history \
   -i "$TARGET" \
   -s Core \
   -s Features/"$TARGET"/"$TARGET" \

@@ -2,14 +2,6 @@ import Combine
 import Core
 import SwiftUI
 
-protocol BravoFooInput {
-    var state: BravoFooState { get set }
-}
-
-protocol BravoFooOutput {
-    var didTapIncrementFoo: AnyPublisher<Void, Never> { get }
-}
-
 struct BravoFooView: View, BravoFooInput {
     private let didTapIncrementFooSubject = PassthroughSubject<Void, Never>()
 

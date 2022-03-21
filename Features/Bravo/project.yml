@@ -2,6 +2,22 @@ targets:
   Bravo:
     templates:
       - FeatureFramework
+  BravoTests:
+    platform: iOS
+    type: bundle.unit-test
+    sources:
+      - path: BravoTests
+    dependencies:
+      - target: Core
+      - target: Bravo
+    preBuildScripts:
+      - name: Generate mock code
+        script: |
+          cd "$PROJECT_DIR"
+          if [ -f ".envrc" ]; then
+            source ".envrc"
+          fi
+          scripts/gen_mock.sh Bravo
   BravoSandboxApp:
     templates:
       - SandboxApp
@@ -20,3 +36,8 @@ targets:
             Features/Bravo/BravoSandboxApp/NeedleGenerated.swift \
             Features/Bravo \
             --header-doc .needle/copyright_header.txt
+
+schemes:
+  Bravo:
+    templates:
+      - FeatureScheme

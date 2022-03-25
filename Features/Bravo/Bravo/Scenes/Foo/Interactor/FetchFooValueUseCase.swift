@@ -14,7 +14,7 @@ class FetchFooValueUseCase: UseCaseType {
         self.dependency = dependency
     }
 
-    func execute(_: Void = (), completion: ((Result<AnyPublisher<Int, Never>, Never>) -> Void)?) {
-        completion?(.success(dependency.gateway.currentValue))
+    func execute(_: Void = ()) async -> Result<AnyPublisher<Int, Never>, Never> {
+        .success(dependency.gateway.currentValue)
     }
 }

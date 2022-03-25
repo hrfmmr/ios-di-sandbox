@@ -19,7 +19,7 @@ class BravoFooVCTests: XCTestCase {
                     gateway: FooRepositoryMock()
                 )
             )
-            let updateUseCase = UpdateFooValueUseCaseMock(
+            let incrementUseCase = IncrementFooValueUseCaseMock(
                 dependency: .init(
                     gateway: FooRepositoryMock()
                 )
@@ -28,7 +28,7 @@ class BravoFooVCTests: XCTestCase {
                 viewContainer: AnyViewContainer(viewContainer),
                 state: state,
                 fetchUseCase: UseCase(fetchUseCase),
-                updateUseCase: UseCase(updateUseCase)
+                incrementUseCase: UseCase(incrementUseCase)
             ))
             let exp = XCTestExpectation(description: "state.fooValue")
             exp.expectedFulfillmentCount = 1
@@ -39,8 +39,8 @@ class BravoFooVCTests: XCTestCase {
             // make context
             let fooValue = 100
             do {
-                fetchUseCase.executeHandler = { _, completion in
-                    completion?(.success(CurrentValueSubject<Int, Never>(fooValue).eraseToAnyPublisher()))
+                fetchUseCase.executeHandler = { _ in
+                    .success(CurrentValueSubject<Int, Never>(fooValue).eraseToAnyPublisher())
                 }
                 state.$fooValue
                     .sink { value in
@@ -66,7 +66,7 @@ class BravoFooVCTests: XCTestCase {
                     gateway: FooRepositoryMock()
                 )
             )
-            let updateUseCase = UpdateFooValueUseCaseMock(
+            let incrementUseCase = IncrementFooValueUseCaseMock(
                 dependency: .init(
                     gateway: FooRepositoryMock()
                 )
@@ -75,17 +75,20 @@ class BravoFooVCTests: XCTestCase {
                 viewContainer: AnyViewContainer(viewContainer),
                 state: state,
                 fetchUseCase: UseCase(fetchUseCase),
-                updateUseCase: UseCase(updateUseCase)
+                incrementUseCase: UseCase(incrementUseCase)
             ))
             // preconditions
             do {
-                XCTAssertEqual(updateUseCase.executeCallCount, 0)
+                XCTAssertEqual(incrementUseCase.executeCallCount, 0)
             }
             // make context
             let fooValue = 100
             do {
-                fetchUseCase.executeHandler = { _, completion in
-                    completion?(.success(CurrentValueSubject<Int, Never>(fooValue).eraseToAnyPublisher()))
+                fetchUseCase.executeHandler = { _ in
+                    .success(CurrentValueSubject<Int, Never>(fooValue).eraseToAnyPublisher())
+                }
+                incrementUseCase.executeHandler = { _ in
+                    .success(())
                 }
                 state.$fooValue
                     .sink { value in
@@ -97,8 +100,9 @@ class BravoFooVCTests: XCTestCase {
             }
             // assertions
             do {
-                XCTAssertEqual(updateUseCase.executeCallCount, 1)
-                XCTAssertEqual(updateUseCase.executeArgValues, [fooValue + 1])
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                    XCTAssertEqual(incrementUseCase.executeCallCount, 1)
+                }
             }
         }
     }

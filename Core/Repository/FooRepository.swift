@@ -4,7 +4,7 @@ import Foundation
 /// @mockable
 public protocol FooRepository {
     var currentValue: AnyPublisher<Int, Never> { get }
-    func update(value: Int)
+    func increment() async throws
 }
 
 public final class FooRepositoryImpl: FooRepository {
@@ -13,7 +13,7 @@ public final class FooRepositoryImpl: FooRepository {
 
     public init() {}
 
-    public func update(value: Int) {
-        self.value = value
+    public func increment() async throws {
+        value += 1
     }
 }

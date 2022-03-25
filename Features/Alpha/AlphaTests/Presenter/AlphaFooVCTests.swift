@@ -35,8 +35,8 @@ class AlphaFooVCTests: XCTestCase {
             // make context
             let fooValue = 100
             do {
-                fetchUseCase.executeHandler = { _, completion in
-                    completion?(.success(CurrentValueSubject<Int, Never>(fooValue).eraseToAnyPublisher()))
+                fetchUseCase.executeHandler = { _ in
+                    .success(CurrentValueSubject<Int, Never>(fooValue).eraseToAnyPublisher())
                 }
                 state.$fooValue
                     .sink { value in
@@ -64,6 +64,9 @@ class AlphaFooVCTests: XCTestCase {
                     gateway: FooRepositoryMock()
                 )
             )
+            fetchUseCase.executeHandler = { _ in
+                .success(CurrentValueSubject<Int, Never>(0).eraseToAnyPublisher())
+            }
             let router = AlphaFooWireframeMock()
             let vc: AlphaFooVC = .init(dependency: .init(
                 viewContainer: AnyViewContainer(viewContainer),

@@ -17,7 +17,7 @@ public final class BravoFooVC: UIViewController {
         let viewContainer: AnyViewContainer<BravoFooInput, BravoFooOutput>
         let state: BravoFooState
         let fetchUseCase: UseCase<Void, AnyPublisher<Int, Never>, Never>
-        let updateUseCase: UseCase<Int, Void, Error>
+        let incrementUseCase: UseCase<Void, Void, Error>
     }
 
     private let dependency: Dependency
@@ -47,9 +47,9 @@ public final class BravoFooVC: UIViewController {
     }
 
     private func fetch() {
-        dependency.fetchUseCase.execute(()) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
+        Task {
+            let fetchResult = await dependency.fetchUseCase.execute(())
+            switch fetchResult {
             case let .success(publisher):
                 publisher
                     .map { Optional($0) }
@@ -68,9 +68,10 @@ private extension BravoFooVC {
     func bindOutput() {
         let output = dependency.viewContainer.output
         output.didTapIncrementFoo.sink { [weak self] _ in
-            guard let self = self, let currentValue = self.dependency.state.fooValue else { return }
-            let value = currentValue + 1
-            self.dependency.updateUseCase.execute(value, completion: nil)
+            guard let self = self else { return }
+            Task {
+                await self.dependency.incrementUseCase.execute(())
+            }
         }
         .store(in: &cancellables)
     }

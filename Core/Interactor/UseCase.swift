@@ -5,10 +5,7 @@ public protocol UseCaseType {
     associatedtype Success
     associatedtype Failure: Error
 
-    func execute(
-        _ parameters: Parameters,
-        completion: ((Result<Success, Failure>) -> Void)?
-    )
+    func execute(_ parameters: Parameters) async -> Result<Success, Failure>
 }
 
 public class UseCase<Parameters, Success, Failure: Error>: UseCaseType {
@@ -23,14 +20,14 @@ public class UseCase<Parameters, Success, Failure: Error>: UseCaseType {
         box = UseCaseBox<T>(base)
     }
 
-    public func execute(_ parameters: Parameters, completion: ((Result<Success, Failure>) -> Void)?) {
-        box.execute(parameters, completion: completion)
+    public func execute(_ parameters: Parameters) async -> Result<Success, Failure> {
+        await box.execute(parameters)
     }
 }
 
 private extension UseCase {
     class AnyUseCaseBox<Parameters, Success, Failure: Error> {
-        func execute(_: Parameters, completion _: ((Result<Success, Failure>) -> Void)?) {
+        func execute(_: Parameters) async -> Result<Success, Failure> {
             fatalError()
         }
     }
@@ -42,8 +39,8 @@ private extension UseCase {
             self.base = base
         }
 
-        override func execute(_ parameters: T.Parameters, completion: ((Result<T.Success, T.Failure>) -> Void)?) {
-            base.execute(parameters, completion: completion)
+        override func execute(_ parameters: T.Parameters) async -> Result<T.Success, T.Failure> {
+            await base.execute(parameters)
         }
     }
 }

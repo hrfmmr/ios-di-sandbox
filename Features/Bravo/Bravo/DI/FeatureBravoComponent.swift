@@ -16,7 +16,7 @@ class BravoFooBuilder: Builder<FeatureBravoDependency>, BravoFooBuildable {
                 viewContainer: AnyViewContainer(makeViewContainer(state: state)),
                 state: state,
                 fetchUseCase: fetchUseCase,
-                updateUseCase: updateUseCase
+                incrementUseCase: incrementUseCase
             )
         )
     }
@@ -33,8 +33,8 @@ class BravoFooBuilder: Builder<FeatureBravoDependency>, BravoFooBuildable {
         ))
     }
 
-    private var updateUseCase: UseCase<Int, Void, Error> {
-        UseCase(UpdateFooValueUseCase(
+    private var incrementUseCase: UseCase<Void, Void, Error> {
+        UseCase(IncrementFooValueUseCase(
             dependency: .init(
                 gateway: dependency.fooRepository
             )

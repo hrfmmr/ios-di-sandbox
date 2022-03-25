@@ -58,9 +58,8 @@ final class AlphaFooVC: UIViewController {
     // MARK: impl
 
     private func fetch() {
-        dependency.fetchUseCase.execute(()) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
+        Task {
+            switch await dependency.fetchUseCase.execute(()) {
             case let .success(publisher):
                 publisher
                     .map { Optional($0) }

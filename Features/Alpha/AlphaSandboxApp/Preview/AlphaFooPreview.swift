@@ -10,7 +10,7 @@ struct AlphaFooPreview: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(devices, id: \.self) { name in
-                AlphaFooView(state: .init(
+                AlphaFooView(viewModel: .init(
                     fooValue: 1
                 ))
                 .previewDevice(PreviewDevice(rawValue: name))

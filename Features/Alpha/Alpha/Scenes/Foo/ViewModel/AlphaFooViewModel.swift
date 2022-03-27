@@ -1,7 +1,7 @@
 import Combine
 import SwiftUI
 
-class AlphaFooState: ObservableObject {
+class AlphaFooViewModel: ObservableObject {
     @Published var fooValue: Int?
 
     init(fooValue: Int? = nil) {

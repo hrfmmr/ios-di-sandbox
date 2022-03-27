@@ -4,7 +4,7 @@ import UIKit
 
 /// @mockable
 protocol AlphaFooInput {
-    var state: AlphaFooState { get set }
+    var viewModel: AlphaFooViewModel { get set }
 }
 
 /// @mockable
@@ -18,7 +18,7 @@ final class AlphaFooVC: UIViewController {
     // DI
     public struct Dependency {
         let viewContainer: AnyViewContainer<AlphaFooInput, AlphaFooOutput>
-        let state: AlphaFooState
+        let viewModel: AlphaFooViewModel
         let fetchUseCase: UseCase<Void, AnyPublisher<Int, Never>, Never>
         let router: AlphaFooWireframe
     }
@@ -26,7 +26,7 @@ final class AlphaFooVC: UIViewController {
     private let dependency: Dependency
 
     // Events
-    @Published private var state: AlphaFooState = .init()
+    @Published private var state: AlphaFooViewModel = .init()
     private let showBravoFooSubject = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
 
@@ -63,7 +63,7 @@ final class AlphaFooVC: UIViewController {
             case let .success(publisher):
                 publisher
                     .map { Optional($0) }
-                    .assign(to: \.fooValue, on: self.dependency.state)
+                    .assign(to: \.fooValue, on: self.dependency.viewModel)
                     .store(in: &self.cancellables)
             }
         }

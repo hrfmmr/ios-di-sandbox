@@ -13,7 +13,7 @@ class AlphaFooVCTests: XCTestCase {
     func testInput_viewDidLoad() throws {
         XCTContext.runActivity(named: "Input::viewDidLoad") { _ in
             let viewContainer = TestAlphaFooViewContainerMock()
-            let state = AlphaFooState()
+            let viewModel = AlphaFooViewModel()
             let fetchUseCase = FetchFooValueUseCaseMock(
                 dependency: .init(
                     gateway: FooRepositoryMock()
@@ -22,15 +22,15 @@ class AlphaFooVCTests: XCTestCase {
             let router = AlphaFooWireframeMock()
             let vc: AlphaFooVC = .init(dependency: .init(
                 viewContainer: AnyViewContainer(viewContainer),
-                state: state,
+                viewModel: viewModel,
                 fetchUseCase: UseCase(fetchUseCase),
                 router: router
             ))
-            let exp = XCTestExpectation(description: "state.fooValue")
+            let exp = XCTestExpectation(description: "viewModel.fooValue")
             exp.expectedFulfillmentCount = 1
             // preconditions
             do {
-                XCTAssertNil(state.fooValue)
+                XCTAssertNil(viewModel.fooValue)
             }
             // make context
             let fooValue = 100
@@ -38,7 +38,7 @@ class AlphaFooVCTests: XCTestCase {
                 fetchUseCase.executeHandler = { _ in
                     .success(CurrentValueSubject<Int, Never>(fooValue).eraseToAnyPublisher())
                 }
-                state.$fooValue
+                viewModel.$fooValue
                     .sink { value in
                         guard value == fooValue else { return }
                         exp.fulfill()
@@ -58,7 +58,7 @@ class AlphaFooVCTests: XCTestCase {
     func testOutput_didTapBravoFoo() throws {
         XCTContext.runActivity(named: "Output::didTapBravoFoo") { _ in
             let viewContainer = TestAlphaFooViewContainerMock()
-            let state = AlphaFooState()
+            let viewModel = AlphaFooViewModel()
             let fetchUseCase = FetchFooValueUseCaseMock(
                 dependency: .init(
                     gateway: FooRepositoryMock()
@@ -70,7 +70,7 @@ class AlphaFooVCTests: XCTestCase {
             let router = AlphaFooWireframeMock()
             let vc: AlphaFooVC = .init(dependency: .init(
                 viewContainer: AnyViewContainer(viewContainer),
-                state: state,
+                viewModel: viewModel,
                 fetchUseCase: UseCase(fetchUseCase),
                 router: router
             ))

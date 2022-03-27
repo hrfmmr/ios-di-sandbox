@@ -5,15 +5,15 @@ import SwiftUI
 struct AlphaFooView: View, AlphaFooInput {
     private let didTapBravoFooSubject = PassthroughSubject<Void, Never>()
 
-    @ObservedObject var state: AlphaFooState
+    @ObservedObject var viewModel: AlphaFooViewModel
 
-    init(state: AlphaFooState) {
-        self.state = state
+    init(viewModel: AlphaFooViewModel) {
+        self.viewModel = viewModel
     }
 
     var body: some View {
         VStack {
-            if let fooValue = state.fooValue {
+            if let fooValue = viewModel.fooValue {
                 Text("foo value:\(fooValue)")
             }
             Button(action: { didTapBravoFooSubject.send(()) }) {

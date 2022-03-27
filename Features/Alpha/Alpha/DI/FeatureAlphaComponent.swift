@@ -11,19 +11,19 @@ public protocol FeatureAlphaDependency: Dependency {
 
 class AlphaFooBuilder: Builder<FeatureAlphaDependency>, AlphaFooBuildable {
     func build() -> UIViewController {
-        let state: AlphaFooState = .init()
+        let viewModel: AlphaFooViewModel = .init()
         return AlphaFooVC(
             dependency: .init(
-                viewContainer: AnyViewContainer(makeViewContainer(state: state)),
-                state: state,
+                viewContainer: AnyViewContainer(makeViewContainer(viewModel: viewModel)),
+                viewModel: viewModel,
                 fetchUseCase: fetchUseCase,
                 router: router
             )
         )
     }
 
-    func makeViewContainer(state: AlphaFooState) -> AlphaFooView {
-        AlphaFooView(state: state)
+    func makeViewContainer(viewModel: AlphaFooViewModel) -> AlphaFooView {
+        AlphaFooView(viewModel: viewModel)
     }
 
     private var fetchUseCase: UseCase<Void, AnyPublisher<Int, Never>, Never> {

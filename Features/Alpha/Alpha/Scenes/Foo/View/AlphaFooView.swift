@@ -1,36 +1,38 @@
-import Combine
-import Core
+import ComposableArchitecture
 import SwiftUI
+import UIKit
 
-struct AlphaFooView: View, AlphaFooInput {
-    private let didTapBravoFooSubject = PassthroughSubject<Void, Never>()
+struct AlphaFooView: View {
+    // MARK: Types
 
-    @ObservedObject var viewModel: AlphaFooViewModel
+    typealias State = AlphaFooState
+    typealias Action = AlphaFooAction
 
-    init(viewModel: AlphaFooViewModel) {
-        self.viewModel = viewModel
+    // MARK: Props
+
+    private let store: Store<State, Action>
+    private let vc: UIViewController
+
+    init(store: Store<State, Action>, vc: UIViewController) {
+        self.store = store
+        self.vc = vc
     }
 
     var body: some View {
-        VStack {
-            if let fooValue = viewModel.fooValue {
-                Text("foo value:\(fooValue)")
+        WithViewStore(store) { viewStore in
+            VStack {
+                if let fooValue = viewStore.fooValue {
+                    Text("foo value:\(fooValue)")
+                }
+                Button(action: { viewStore.send(.showBravoButtonTapped(vc)) }) {
+                    Text("Go to BravoFoo")
+                }
+                .frame(width: 200, height: 44)
             }
-            Button(action: { didTapBravoFooSubject.send(()) }) {
-                Text("Go to BravoFoo")
-            }
-            .frame(width: 200, height: 44)
         }
     }
 }
 
-extension AlphaFooView: AlphaFooOutput {
-    var didTapBravoFoo: AnyPublisher<Void, Never> {
-        didTapBravoFooSubject.eraseToAnyPublisher()
-    }
-}
-
-extension AlphaFooView: ViewContainer {
-    var input: AlphaFooInput { self }
-    var output: AlphaFooOutput { self }
+extension AlphaFooView {
+    var uiview: UIView { UIHostingController(rootView: self).view }
 }

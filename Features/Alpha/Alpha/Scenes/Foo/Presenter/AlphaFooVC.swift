@@ -1,41 +1,32 @@
 import Combine
+import ComposableArchitecture
 import Core
+import SwiftUI
 import UIKit
 
-/// @mockable
-protocol AlphaFooInput {
-    var viewModel: AlphaFooViewModel { get set }
-}
-
-/// @mockable
-protocol AlphaFooOutput {
-    var didTapBravoFoo: AnyPublisher<Void, Never> { get }
-}
-
 final class AlphaFooVC: UIViewController {
-    // MARK: Props
+    // MARK: Types
+
+    typealias State = AlphaFooState
+    typealias Action = AlphaFooAction
 
     // DI
     public struct Dependency {
-        let viewContainer: AnyViewContainer<AlphaFooInput, AlphaFooOutput>
-        let viewModel: AlphaFooViewModel
-        let fetchUseCase: UseCase<Void, AnyPublisher<Int, Never>, Never>
-        let router: AlphaFooWireframe
+        let store: Store<State, Action>
     }
 
-    private let dependency: Dependency
+    // MARK: Props
 
-    // Events
-    @Published private var state: AlphaFooViewModel = .init()
-    private let showBravoFooSubject = PassthroughSubject<Void, Never>()
-    private var cancellables = Set<AnyCancellable>()
+    private let dependency: Dependency
+    private let viewStore: ViewStore<State, Action>
+    private var store: Store<State, Action> { dependency.store }
 
     // MARK: Init
 
     public init(dependency: Dependency) {
         self.dependency = dependency
+        viewStore = .init(dependency.store)
         super.init(nibName: nil, bundle: nil)
-        binding()
     }
 
     @available(*, unavailable)
@@ -45,44 +36,39 @@ final class AlphaFooVC: UIViewController {
 
     // MARK: Life cycle
 
-    override public func loadView() {
-        view = dependency.viewContainer.view
-    }
-
     override public func viewDidLoad() {
         super.viewDidLoad()
         title = String(describing: type(of: self))
-        fetch()
+        configureNavBar()
+        configureView()
+        viewStore.send(.onAppear)
     }
 
-    // MARK: impl
+    // MARK: Set up
 
-    private func fetch() {
-        Task {
-            switch await dependency.fetchUseCase.execute(()) {
-            case let .success(publisher):
-                publisher
-                    .map { Optional($0) }
-                    .assign(to: \.fooValue, on: self.dependency.viewModel)
-                    .store(in: &self.cancellables)
-            }
-        }
-    }
-}
-
-// MARK: - Binding
-
-private extension AlphaFooVC {
-    func binding() {
-        bindOutput()
+    private func configureNavBar() {
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
-    func bindOutput() {
-        let output = dependency.viewContainer.output
-        output.didTapBravoFoo.sink { [weak self] _ in
-            guard let self = self else { return }
-            self.dependency.router.showBravoFoo(on: self)
-        }
-        .store(in: &cancellables)
+    private func configureView() {
+        let contentVC = UIHostingController(
+            rootView: AlphaFooView(
+                store: store,
+                vc: self
+            )
+        )
+        _ = {
+            addChild($0)
+            view.addSubview($0.view)
+            $0.didMove(toParent: self)
+            $0.view.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                $0.view.topAnchor.constraint(equalTo: view.topAnchor),
+                $0.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                $0.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                $0.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            ])
+        }(contentVC)
     }
 }

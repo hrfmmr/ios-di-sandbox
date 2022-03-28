@@ -11,27 +11,23 @@ public protocol FeatureAlphaDependency: Dependency {
 
 class AlphaFooBuilder: Builder<FeatureAlphaDependency>, AlphaFooBuildable {
     func build() -> UIViewController {
-        let viewModel: AlphaFooViewModel = .init()
         return AlphaFooVC(
             dependency: .init(
-                viewContainer: AnyViewContainer(makeViewContainer(viewModel: viewModel)),
-                viewModel: viewModel,
-                fetchUseCase: fetchUseCase,
-                router: router
+                store: .init(
+                    initialState: .init(),
+                    reducer: alphaFooReducer,
+                    environment: environment
+                )
             )
         )
     }
 
-    func makeViewContainer(viewModel: AlphaFooViewModel) -> AlphaFooView {
-        AlphaFooView(viewModel: viewModel)
-    }
-
-    private var fetchUseCase: UseCase<Void, AnyPublisher<Int, Never>, Never> {
-        UseCase(FetchFooValueUseCase(
-            dependency: .init(
-                gateway: dependency.fooRepository
-            )
-        ))
+    var environment: AlphaFooEnvironment {
+        .init(
+            repository: dependency.fooRepository,
+            router: router,
+            mainQueue: .main
+        )
     }
 
     private var router: AlphaFooWireframe {

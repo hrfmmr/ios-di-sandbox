@@ -1,4 +1,3 @@
-import NeedleFoundation
 import UIKit
 
 public protocol BravoFooBuildable: Buildable {

@@ -71,6 +71,8 @@ targets:
         product: NeedleFoundation
       - package: swift-composable-architecture
         product: ComposableArchitecture
+      - package: swift-dependencies
+        product: Dependencies
 
 schemeTemplates:
   FeatureScheme:
@@ -104,3 +106,6 @@ packages:
   swift-composable-architecture:
     url: https://github.com/pointfreeco/swift-composable-architecture
     from: 0.34.0
+  swift-dependencies:
+    url: https://github.com/pointfreeco/swift-dependencies
+    from: 0.1.4

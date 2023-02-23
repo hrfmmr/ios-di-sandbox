@@ -1,4 +1,4 @@
-import NeedleFoundation
+import Dependencies
 
 #if DEBUG
     import UIKit
@@ -6,12 +6,11 @@ import NeedleFoundation
     @main
     class AppDelegate: UIResponder, UIApplicationDelegate {
         var window: UIWindow?
+        @Dependencies.Dependency(\.alphaSceneBuilder.buildFooScene) var buildAlphaFooScene
 
         func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-            registerProviderFactories()
             let window = UIWindow(frame: UIScreen.main.bounds)
-            let rootComponent = RootComponent()
-            let alphaFooVC = rootComponent.featureAlphaComponent.fooBuilder().build()
+            let alphaFooVC = buildAlphaFooScene()
             window.rootViewController = UINavigationController(rootViewController: alphaFooVC)
             window.makeKeyAndVisible()
             self.window = window

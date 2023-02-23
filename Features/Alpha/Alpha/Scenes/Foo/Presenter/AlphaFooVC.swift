@@ -5,27 +5,18 @@ import SwiftUI
 import UIKit
 
 final class AlphaFooVC: UIViewController {
-    // MARK: Types
-
-    typealias State = AlphaFooState
-    typealias Action = AlphaFooAction
-
-    // DI
-    public struct Dependency {
-        let store: Store<State, Action>
-    }
-
     // MARK: Props
-
-    private let dependency: Dependency
-    private let viewStore: ViewStore<State, Action>
-    private var store: Store<State, Action> { dependency.store }
+    private let store: StoreOf<AlphaFooReducer>
+    private let viewStore: ViewStoreOf<AlphaFooReducer>
 
     // MARK: Init
-
-    public init(dependency: Dependency) {
-        self.dependency = dependency
-        viewStore = .init(dependency.store)
+    init() {
+        let store: StoreOf<AlphaFooReducer> = .init(
+            initialState: AlphaFooReducer.State(),
+            reducer: AlphaFooReducer()
+        )
+        self.store = store
+        self.viewStore = .init(store)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -36,7 +27,7 @@ final class AlphaFooVC: UIViewController {
 
     // MARK: Life cycle
 
-    override public func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         title = String(describing: type(of: self))
         configureNavBar()

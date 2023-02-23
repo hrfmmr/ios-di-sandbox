@@ -1,37 +1,41 @@
 import Combine
-import ComposableArchitecture
-import Core
 import UIKit
 
-struct AlphaFooState: Equatable, Identifiable {
-    let id = UUID()
-    var fooValue: Int?
-}
+import ComposableArchitecture
+import Dependencies
 
-enum AlphaFooAction: Equatable {
-    case onAppear
-    case fetchFooResponse(Result<Int, Never>)
-    case showBravoButtonTapped(UIViewController)
-}
+import Core
 
-struct AlphaFooEnvironment {
-    let repository: FooRepository
-    let router: AlphaFooWireframe
-    let mainQueue: AnySchedulerOf<DispatchQueue>
-}
+struct AlphaFooReducer: ReducerProtocol {
+    struct State: Equatable, Identifiable {
+        let id = UUID()
+        var fooValue: Int?
+    }
+    
+    enum Action: Equatable {
+        case onAppear
+        case fetchFooResponse(Result<Int, Never>)
+        case showBravoButtonTapped(UIViewController)
+    }
 
-typealias AlphaFooReducer = Reducer<AlphaFooState, AlphaFooAction, AlphaFooEnvironment>
-let alphaFooReducer = AlphaFooReducer { state, action, environment in
-    switch action {
-    case .onAppear:
-        return environment.repository.currentValue
-            .catchToEffect()
-            .map(AlphaFooAction.fetchFooResponse)
-    case let .fetchFooResponse(.success(value)):
-        state.fooValue = value
-        return .none
-    case let .showBravoButtonTapped(vc):
-        environment.router.showBravoFoo(on: vc)
-        return .none
+    @Dependency(\.mainQueue) var mainQueue
+    @Dependency(\.fooRepository) var repository
+    @Dependency(\.alphaFooRouter.showBravoFoo) var showBravoFoo
+    
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .onAppear:
+                return repository.currentValue
+                    .catchToEffect()
+                    .map(Action.fetchFooResponse)
+            case let .fetchFooResponse(.success(value)):
+                state.fooValue = value
+                return .none
+            case let .showBravoButtonTapped(fromVC):
+                showBravoFoo(fromVC)
+                return .none
+            }
+        }
     }
 }

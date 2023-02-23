@@ -3,17 +3,11 @@ import SwiftUI
 import UIKit
 
 struct AlphaFooView: View {
-    // MARK: Types
-
-    typealias State = AlphaFooState
-    typealias Action = AlphaFooAction
-
     // MARK: Props
-
-    private let store: Store<State, Action>
+    private let store: StoreOf<AlphaFooReducer>
     private let vc: UIViewController
 
-    init(store: Store<State, Action>, vc: UIViewController) {
+    init(store: StoreOf<AlphaFooReducer>, vc: UIViewController) {
         self.store = store
         self.vc = vc
     }

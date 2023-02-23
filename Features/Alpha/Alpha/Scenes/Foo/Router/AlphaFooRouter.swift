@@ -1,24 +1,30 @@
-import Core
 import UIKit
 
+import Dependencies
+
+import Core
+
 /// @mockable
-protocol AlphaFooWireframe {
-    func showBravoFoo(on viewController: UIViewController)
+struct AlphaFooRouter {
+    var showBravoFoo: (_ vc: UIViewController) -> Void
 }
 
-class AlphaFooRouter: AlphaFooWireframe {
-    struct Dependency {
-        let bravoFooBuilder: BravoFooBuildable
+extension AlphaFooRouter: DependencyKey {
+    static var liveValue: Self {
+        @Dependency(\.bravoSceneBuilder.buildFooScene) var buildFooScene
+        
+        return Self(
+            showBravoFoo: { fromVC in
+                let destVC = buildFooScene()
+                fromVC.navigationController?.pushViewController(destVC, animated: true)
+            }
+        )
     }
+}
 
-    private let dependency: Dependency
-
-    init(dependency: Dependency) {
-        self.dependency = dependency
-    }
-
-    func showBravoFoo(on viewController: UIViewController) {
-        let vc = dependency.bravoFooBuilder.build()
-        viewController.navigationController?.pushViewController(vc, animated: true)
+extension DependencyValues {
+    var alphaFooRouter: AlphaFooRouter {
+        get { self[AlphaFooRouter.self] }
+        set { self[AlphaFooRouter.self] = newValue }
     }
 }

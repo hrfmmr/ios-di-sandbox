@@ -12,7 +12,7 @@ struct AlphaFooRouter {
 extension AlphaFooRouter: DependencyKey {
     static var liveValue: Self {
         @Dependency(\.bravoSceneBuilder.buildFooScene) var buildFooScene
-        
+
         return Self(
             showBravoFoo: { fromVC in
                 let destVC = buildFooScene()

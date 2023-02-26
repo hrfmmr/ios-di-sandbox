@@ -45,17 +45,6 @@ targets:
       - target: Core
       - target: Alpha
       - target: Bravo
-    preBuildScripts:
-      - name: Generate resolving dependencies code
-        script: |
-          cd "$PROJECT_DIR"
-          if [ -f ".envrc" ]; then
-            source ".envrc"
-          fi
-          needle generate \
-            app/DI/NeedleGenerated.swift \
-            .needle/source_list_files.txt \
-            --header-doc .needle/copyright_header.txt
 
   Core:
     templates:
@@ -67,8 +56,6 @@ targets:
     platform: iOS
     type: framework.static
     dependencies:
-      - package: NeedleFoundation
-        product: NeedleFoundation
       - package: swift-composable-architecture
         product: ComposableArchitecture
       - package: swift-dependencies
@@ -100,9 +87,6 @@ include:
   - Features/Bravo/project.yml
 
 packages:
-  NeedleFoundation:
-    url: https://github.com/uber/needle
-    from: 0.17.2
   swift-composable-architecture:
     url: https://github.com/pointfreeco/swift-composable-architecture
     from: 0.34.0

@@ -2,7 +2,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-//struct AlphaFooPreview: PreviewProvider {
+// struct AlphaFooPreview: PreviewProvider {
 //    struct IntegratedVC: UIViewControllerRepresentable {
 //        init() {
 //            registerProviderFactories()
@@ -36,4 +36,4 @@ import SwiftUI
 //            }
 //        }
 //    }
-//}
+// }

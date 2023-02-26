@@ -25,17 +25,6 @@ targets:
       - path: ${target_name}
     dependencies:
       - target: Alpha
-    preBuildScripts:
-      - name: Generate resolving dependencies code
-        script: |
-          cd "$PROJECT_DIR"
-          if [ -f ".envrc" ]; then
-            source ".envrc"
-          fi
-          needle generate \
-            Features/Alpha/AlphaSandboxApp/NeedleGenerated.swift \
-            Features/Alpha \
-            --header-doc .needle/copyright_header.txt
 
 schemes:
   Alpha:

@@ -1,27 +1,33 @@
 import Combine
-import Core
 import Foundation
 
+import Dependencies
+
+import Core
+
 /// @mockable
-class IncrementFooValueUseCase: UseCaseType {
+struct IncrementFooValueUseCase: UseCaseType {
     typealias Parameters = Void
 
-    struct Dependency {
-        let gateway: FooRepository
-    }
-
-    private let dependency: Dependency
-
-    init(dependency: Dependency) {
-        self.dependency = dependency
-    }
+    @Dependency(\.fooRepository) var gateway
 
     func execute(_: Parameters = ()) async -> Result<Void, Error> {
         do {
-            try await dependency.gateway.increment()
+            try await gateway.increment()
             return .success(())
         } catch {
             return .failure(error)
         }
+    }
+}
+
+extension IncrementFooValueUseCase: DependencyKey {
+    static let liveValue: Self = .init()
+}
+
+extension DependencyValues {
+    var incrementFooUseCase: IncrementFooValueUseCase {
+        get { self[IncrementFooValueUseCase.self] }
+        set { self[IncrementFooValueUseCase.self] = newValue }
     }
 }

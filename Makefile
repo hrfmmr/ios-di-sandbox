@@ -14,7 +14,6 @@ bootstrap:
 	mint bootstrap
 	@"$(MAKE)" git-hooks
 	@"$(MAKE)" submodules
-	@"$(MAKE)" needle
 	@"$(MAKE)" build-xcodeproj
 
 hooks = $(patsubst .git-hooks/%,.git/hooks/%,$(wildcard .git-hooks/*))
@@ -33,10 +32,6 @@ build-xcodeproj:
 submodules:
 	@git submodule update --init --recursive
 
-.PHONY: needle
-needle:
-	@scripts/gen_di.sh
-
 .PHONY: build
 build: build-xcodeproj
 	xcodebuild \
@@ -49,7 +44,6 @@ build: build-xcodeproj
 .PHONY: format
 format:
 	@$(mint-run) swiftformat \
-		--exclude "**/NeedleGenerated.swift" \
 		--exclude "**/GeneratedMocks.swift" \
 		.
 
@@ -57,7 +51,6 @@ format:
 lint:
 	@$(mint-run) swiftformat \
 		--lint \
-		--exclude "**/NeedleGenerated.swift" \
 		--exclude "**/GeneratedMocks.swift" \
 		.
 

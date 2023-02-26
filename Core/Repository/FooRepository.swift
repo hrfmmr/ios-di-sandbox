@@ -25,16 +25,16 @@ struct UnimplementedFooRepository: FooRepository {
     var currentValue: AnyPublisher<Int, Never> {
         unimplemented("\(Self.self).currentValue")
     }
-    
+
     func increment() async throws {
         fatalError("unimplemented:\(Self.self).increment")
     }
 }
 
 public enum FooRepositoryKey: DependencyKey {
-    static public let liveValue: any FooRepository = FooRepositoryImpl()
-    static public let previewValue: any FooRepository = UnimplementedFooRepository()
-    static public let testValue: any FooRepository = UnimplementedFooRepository()
+    public static let liveValue: any FooRepository = FooRepositoryImpl()
+    public static let previewValue: any FooRepository = UnimplementedFooRepository()
+    public static let testValue: any FooRepository = UnimplementedFooRepository()
 }
 
 public extension DependencyValues {

@@ -6,14 +6,14 @@ import Dependencies
 
 public struct BravoSceneBuilder {
     public var buildFooScene: () -> UIViewController
-    
+
     public init(buildFooScene: @escaping () -> UIViewController) {
         self.buildFooScene = buildFooScene
     }
 }
 
 extension BravoSceneBuilder: TestDependencyKey {
-    public static let testValue: Self = Self(
+    public static let testValue: Self = .init(
         buildFooScene: unimplemented("\(Self.self).buildFooScene")
     )
 }

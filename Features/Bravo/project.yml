@@ -25,17 +25,6 @@ targets:
       - path: ${target_name}
     dependencies:
       - target: Bravo
-    preBuildScripts:
-      - name: Generate resolving dependencies code
-        script: |
-          cd "$PROJECT_DIR"
-          if [ -f ".envrc" ]; then
-            source ".envrc"
-          fi
-          needle generate \
-            Features/Bravo/BravoSandboxApp/NeedleGenerated.swift \
-            Features/Bravo \
-            --header-doc .needle/copyright_header.txt
 
 schemes:
   Bravo:

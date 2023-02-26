@@ -2,6 +2,8 @@ import Combine
 import Core
 import UIKit
 
+import Dependencies
+
 /// @mockable
 protocol BravoFooInput {
     var state: BravoFooState { get set }
@@ -13,20 +15,16 @@ protocol BravoFooOutput {
 }
 
 public final class BravoFooVC: UIViewController {
-    public struct Dependency {
-        let viewContainer: AnyViewContainer<BravoFooInput, BravoFooOutput>
-        let state: BravoFooState
-        let fetchUseCase: UseCase<Void, AnyPublisher<Int, Never>, Never>
-        let incrementUseCase: UseCase<Void, Void, Error>
-    }
-
-    private let dependency: Dependency
+    @Dependencies.Dependency(\.fooState) var state
+    @Dependencies.Dependency(\.fetchFooUseCase) var fetchUseCase
+    @Dependencies.Dependency(\.incrementFooUseCase) var incrementUseCase
+    @Dependencies.Dependency(\.mainQueue) var mainQueue
+    private lazy var viewContainer: AnyViewContainer<BravoFooInput, BravoFooOutput> = .init(BravoFooView(state: state))
 
     // Events
     private var cancellables = Set<AnyCancellable>()
 
-    public init(dependency: Dependency) {
-        self.dependency = dependency
+    public init() {
         super.init(nibName: nil, bundle: nil)
         binding()
     }
@@ -37,7 +35,7 @@ public final class BravoFooVC: UIViewController {
     }
 
     override public func loadView() {
-        view = dependency.viewContainer.view
+        view = viewContainer.view
     }
 
     override public func viewDidLoad() {
@@ -48,12 +46,13 @@ public final class BravoFooVC: UIViewController {
 
     private func fetch() {
         Task {
-            let fetchResult = await dependency.fetchUseCase.execute(())
+            let fetchResult = await fetchUseCase.execute(())
             switch fetchResult {
             case let .success(publisher):
                 publisher
+                    .receive(on: mainQueue)
                     .map { Optional($0) }
-                    .assign(to: \.fooValue, on: self.dependency.state)
+                    .assign(to: \.fooValue, on: self.state)
                     .store(in: &self.cancellables)
             }
         }
@@ -66,11 +65,11 @@ private extension BravoFooVC {
     }
 
     func bindOutput() {
-        let output = dependency.viewContainer.output
+        let output = viewContainer.output
         output.didTapIncrementFoo.sink { [weak self] _ in
             guard let self = self else { return }
             Task {
-                await self.dependency.incrementUseCase.execute(())
+                await self.incrementUseCase.execute(())
             }
         }
         .store(in: &cancellables)

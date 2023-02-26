@@ -4,6 +4,7 @@ import UIKit
 
 struct AlphaFooView: View {
     // MARK: Props
+
     private let store: StoreOf<AlphaFooReducer>
     private let vc: UIViewController
 

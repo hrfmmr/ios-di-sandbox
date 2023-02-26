@@ -11,7 +11,7 @@ struct AlphaFooReducer: ReducerProtocol {
         let id = UUID()
         var fooValue: Int?
     }
-    
+
     enum Action: Equatable {
         case onAppear
         case fetchFooResponse(Result<Int, Never>)
@@ -21,12 +21,13 @@ struct AlphaFooReducer: ReducerProtocol {
     @Dependency(\.mainQueue) var mainQueue
     @Dependency(\.fooRepository) var repository
     @Dependency(\.alphaFooRouter.showBravoFoo) var showBravoFoo
-    
+
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
                 return repository.currentValue
+                    .receive(on: mainQueue)
                     .catchToEffect()
                     .map(Action.fetchFooResponse)
             case let .fetchFooResponse(.success(value)):

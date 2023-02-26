@@ -6,17 +6,19 @@ import UIKit
 
 final class AlphaFooVC: UIViewController {
     // MARK: Props
+
     private let store: StoreOf<AlphaFooReducer>
     private let viewStore: ViewStoreOf<AlphaFooReducer>
 
     // MARK: Init
+
     init() {
         let store: StoreOf<AlphaFooReducer> = .init(
             initialState: AlphaFooReducer.State(),
             reducer: AlphaFooReducer()
         )
         self.store = store
-        self.viewStore = .init(store)
+        viewStore = .init(store)
         super.init(nibName: nil, bundle: nil)
     }
 

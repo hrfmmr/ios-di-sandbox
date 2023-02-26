@@ -1,3 +1,0 @@
-app/DI/RootComponent.swift
-Features/Alpha/Alpha/DI/FeatureAlphaComponent.swift
-Features/Bravo/Bravo/DI/FeatureBravoComponent.swift
